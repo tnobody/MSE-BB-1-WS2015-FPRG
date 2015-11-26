@@ -39,7 +39,7 @@ public class UE2Test {
     @Test
     public void testFoldProject() throws Exception {
         List<Project> projects = Arrays.asList(new Project(5), new Project(10), new Project(2));
-        String  sum = UE2.fold((a,b) -> new Project(a.getWorkedHours()+b.getWorkedHours) ,new Project(0), projects);
-        assertEquals("Hello Functional Programming in Java", sum);
+        //String  sum = UE2.fold((a,b) -> new Project(a.getWorkedHours()+b.getWorkedHours) ,new Project(0), projects);
+        //assertEquals("Hello Functional Programming in Java", sum);
     }
 }
