@@ -8,7 +8,10 @@ import java.util.function.BinaryOperator;
 public class UE2 {
 
     public static <T> T fold(BinaryOperator<T> fn, T init, List<T> in) {
-        return in.stream().reduce(init,fn);
+        if (in.size() - 1 > 0) {
+            return fold(fn, fn.apply(init, in.get(0)), in.subList(1, in.size()));
+        }
+        return fn.apply(init, in.get(0));
     }
 
 }

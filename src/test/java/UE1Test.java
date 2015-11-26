@@ -1,4 +1,4 @@
-import domain.Rectangle;
+import domain.Square;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -15,7 +15,7 @@ public class UE1Test {
     private Function<Integer, Integer> powerInt = (i -> i*i);
     private Function<Integer, String> int2String = (i -> "#" + i.toString());
 
-    private Function<Rectangle, Integer> rect2Area = (r -> r.getArea());
+    private Function<Square, Integer> rect2Area = (r -> r.getArea());
 
     @Test
     public void testMap() throws Exception {
@@ -29,7 +29,7 @@ public class UE1Test {
 
     @Test
     public void testMapRectangle() throws Exception {
-        List<Rectangle> rectangles = Arrays.asList(new Rectangle(5), new Rectangle(3), new Rectangle(10));
+        List<Square> rectangles = Arrays.asList(new Square(5), new Square(3), new Square(10));
         assertArrayEquals("", Arrays.asList(25,9,100).toArray(), UE1.map(rect2Area, rectangles).toArray());
     }
 }

@@ -1,7 +1,9 @@
 import org.junit.Test;
 
+import domain.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BinaryOperator;
 
 import static org.junit.Assert.*;
 
@@ -10,21 +12,13 @@ import static org.junit.Assert.*;
  */
 public class UE2Test {
 
-    public class Project {
-        private int workedHours;
-
-        public Project(int workedHours) {
-            this.workedHours = workedHours;
-        }
-
-        public int getWorkedHours() {
-            return workedHours;
-        }
-    }
+    private BinaryOperator<Integer> sumList = (a,b) -> a+b;
+    private BinaryOperator<String> concatString = (a,b) -> a + " " +b;
+    private BinaryOperator<Square> sumSquares = (a,b) -> a.add(b);
 
     @Test
     public void testFoldInteger() throws Exception {
-        Integer  sum = UE2.fold((a,b) -> a+b,0, Arrays.asList(1,2,3));
+        Integer  sum = UE2.fold(sumList,0, Arrays.asList(1,2,3));
         // This will lead to a compiler error
         //int  sum = UE2.fold((a,b) -> a+b,0, Arrays.asList(1,2,3));
         assertEquals(new Integer(6), sum);
@@ -32,14 +26,14 @@ public class UE2Test {
 
     @Test
     public void testFoldString() throws Exception {
-        String  sum = UE2.fold((a,b) -> a + "" +b,"Hello", Arrays.asList("Functional", "Programming", "in", "Java"));
+        String  sum = UE2.fold(concatString,"Hello", Arrays.asList("Functional", "Programming", "in", "Java"));
         assertEquals("Hello Functional Programming in Java", sum);
     }
 
     @Test
     public void testFoldProject() throws Exception {
-        List<Project> projects = Arrays.asList(new Project(5), new Project(10), new Project(2));
-        //String  sum = UE2.fold((a,b) -> new Project(a.getWorkedHours()+b.getWorkedHours) ,new Project(0), projects);
-        //assertEquals("Hello Functional Programming in Java", sum);
+        List<Square> projects = Arrays.asList(new Square(5), new Square(10), new Square(3));
+        Square summedSquare = UE2.fold(sumSquares,new Square(7),projects);
+        assertEquals(25, summedSquare.getL());
     }
 }
