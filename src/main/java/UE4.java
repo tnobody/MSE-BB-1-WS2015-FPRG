@@ -1,6 +1,5 @@
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 
@@ -27,20 +26,32 @@ public class UE4 {
         }
     }
 
-    public static <A,B> B divideAndConquer(
-            Function<List<A>,Boolean> trivial,
-            Function<List<A>,B> solve,
-            Function<List<A>,Tupel<List<A>>> divide,
-            BinaryOperator<B> combine,
-            List<A> in) {
+    public static <T> List<T> filter(List<T> in, Function<T, Boolean> filterFn) {
+        List<T> out = new ArrayList<>();
+        if (in.size() == 0) {
+            return out;
+        }
+        if(filterFn.apply(in.get(0))) {
+            out.add(in.get(0));
+        }
+        out.addAll(filter(in.subList(1, in.size()), filterFn));
+        return out;
+    }
 
-        if(trivial.apply(in)) {
+    public static <I, O> O divideAndConquer(
+            Function<List<I>, Boolean> trivial,
+            Function<List<I>, O> solve,
+            Function<List<I>, Tupel<List<I>>> divide,
+            BinaryOperator<O> combine,
+            List<I> in) {
+
+        if (trivial.apply(in)) {
             return solve.apply(in);
         } else {
-            Tupel<List<A>> tupel = divide.apply(in);
+            Tupel<List<I>> tupel = divide.apply(in);
             return combine.apply(
-                    divideAndConquer(trivial,solve,divide,combine,tupel.getX()),
-                    divideAndConquer(trivial,solve,divide,combine,tupel.getY())
+                    divideAndConquer(trivial, solve, divide, combine, tupel.getX()),
+                    divideAndConquer(trivial, solve, divide, combine, tupel.getY())
             );
         }
     }
