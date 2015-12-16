@@ -24,19 +24,40 @@ public class UE4 {
         public T getY() {
             return y;
         }
+
+        @Override
+        public String toString() {
+            return "Tupel{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    '}';
+        }
     }
 
-    public static <T> List<T> filter(List<T> in, Function<T, Boolean> filterFn) {
-        List<T> out = new ArrayList<>();
-        if (in.size() == 0) {
-            return out;
-        }
-        if(filterFn.apply(in.get(0))) {
-            out.add(in.get(0));
-        }
-        out.addAll(filter(in.subList(1, in.size()), filterFn));
+    /**
+     * Returns a tupel where X contains al list of all elements applied with true and Y a List where all Elemetns appllied with false
+     * @param in
+     * @param filterFn
+     * @param <T>
+     * @return
+     */
+    public static <T> Tupel<List<T>> filter(List<T> in, Function<T, Boolean> filterFn) {
+        Tupel<List<T>> out = new Tupel<>(new ArrayList<>(), new ArrayList<>());
+        _filter(in, filterFn, out);
         return out;
     }
+
+    private static <T> void _filter(List<T> in, Function<T, Boolean> filterFn, Tupel<List<T>> out) {
+        if (filterFn.apply(in.get(0))) {
+            out.getX().add(in.get(0));
+        } else {
+            out.getY().add(in.get(0));
+        }
+        if (in.size() -1 > 0) {
+            _filter(in.subList(1,in.size()), filterFn, out);
+        }
+    }
+
 
     public static <I, O> O divideAndConquer(
             Function<List<I>, Boolean> trivial,

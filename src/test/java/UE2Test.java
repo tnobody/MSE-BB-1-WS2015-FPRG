@@ -19,8 +19,6 @@ public class UE2Test {
     @Test
     public void testFoldInteger() throws Exception {
         Integer  sum = UE2.fold(sumList,0, Arrays.asList(1,2,3));
-        // This will lead to a compiler error
-        //int  sum = UE2.fold((a,b) -> a+b,0, Arrays.asList(1,2,3));
         assertEquals(new Integer(6), sum);
     }
 

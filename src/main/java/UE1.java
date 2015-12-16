@@ -10,10 +10,16 @@ import java.util.stream.Collectors;
 public class UE1 {
 
     public static <I, O> List<O> map(Function<I, O> fn, List<I> in) {
-        List<O> out = new ArrayList<O>() {{ add(fn.apply(in.get(0))); }};
-        if (in.size() - 1 > 0) {
-            out.addAll(map(fn, in.subList(1, in.size())));
-        }
+        List<O> out = new ArrayList<>();
+        _map(fn, in, out);
         return out;
     }
+
+    private static <I, O> void _map(Function<I,O> fn, List<I> in, List<O> out) {
+        out.add(fn.apply(in.get(0)));
+        if (in.size() - 1 > 0) {
+            _map(fn, in.subList(1, in.size()),out);
+        }
+    }
+
 }
