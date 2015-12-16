@@ -40,9 +40,15 @@ public class UE4Test {
         qsTrivial = (l) -> l.size() <= 1;
         qsSolve = (l) -> l;
         qsDivide = (l) -> {
-            UE4.Tupel<List<Integer>> duplicationFilter = UE4.filter(l,i -> i == l.get(0));
+            UE4.Tupel<List<Integer>> duplicationFilter = UE4.filter(l, i -> i == l.get(0));
             UE4.Tupel<List<Integer>> divides = UE4.filter(duplicationFilter.getY(), i -> i < l.get(0));
-            divides.getX().addAll(duplicationFilter.getX());
+            if (duplicationFilter.getY().size() != 0) {
+                divides.getX().addAll(duplicationFilter.getX());
+            } else {
+                divides = new UE4.Tupel<>(
+                        duplicationFilter.getX().subList(0,1),
+                        duplicationFilter.getX().subList(1,duplicationFilter.getX().size()));
+            }
             return divides;
         };
         qsCombine = (a, b) -> new ArrayList<Integer>() {{
@@ -56,8 +62,8 @@ public class UE4Test {
                 qsCombine,
                 integers
         );
-        System.out.println(qsDivide.apply(integers));
-        assertArrayEquals("", new Integer[]{2, 3, 5, 7, 9, 53}, sortedIntegers.toArray());
+        System.out.println(sortedIntegers);
+        assertArrayEquals("", new Integer[]{2, 3, 5, 5, 7, 9, 53}, sortedIntegers.toArray());
     }
 
     @Test

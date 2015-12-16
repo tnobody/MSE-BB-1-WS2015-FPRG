@@ -43,7 +43,9 @@ public class UE4 {
      */
     public static <T> Tupel<List<T>> filter(List<T> in, Function<T, Boolean> filterFn) {
         Tupel<List<T>> out = new Tupel<>(new ArrayList<>(), new ArrayList<>());
-        _filter(in, filterFn, out);
+        if(in.size() > 0) {
+            _filter(in, filterFn, out);
+        }
         return out;
     }
 

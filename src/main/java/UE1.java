@@ -11,7 +11,9 @@ public class UE1 {
 
     public static <I, O> List<O> map(Function<I, O> fn, List<I> in) {
         List<O> out = new ArrayList<>();
-        _map(fn, in, out);
+        if(in.size() > 0) {
+            _map(fn, in, out);
+        }
         return out;
     }
 
