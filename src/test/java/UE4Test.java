@@ -46,8 +46,8 @@ public class UE4Test {
                 divides.getX().addAll(duplicationFilter.getX());
             } else {
                 divides = new UE4.Tupel<>(
-                        duplicationFilter.getX().subList(0,1),
-                        duplicationFilter.getX().subList(1,duplicationFilter.getX().size()));
+                        duplicationFilter.getX().subList(0, 1),
+                        duplicationFilter.getX().subList(1, duplicationFilter.getX().size()));
             }
             return divides;
         };
@@ -75,24 +75,22 @@ public class UE4Test {
                 l.subList(0, (int) Math.floor(l.size() / 2)),
                 l.subList((int) (Math.floor(l.size() / 2)), l.size()));
         msCombine = (left, right) -> {
-            // TODO: Recursion
             List<Integer> combined = new ArrayList<>();
-            while (left.size() > 0 && right.size() > 0) {
+            if (left.size() > 0 && right.size() > 0) {
                 if (left.get(0) <= right.get(0)) {
                     combined.add(left.get(0));
-                    left = left.subList(1, left.size());
+                    combined.addAll(msCombine.apply(left.subList(1, left.size()), right));
+
                 } else {
                     combined.add(right.get(0));
-                    right = right.subList(1, right.size());
+                    combined.addAll(msCombine.apply(left, right.subList(1, right.size())));
                 }
-            }
-            while (left.size() > 0) {
+            } else if (left.size() > 0) {
                 combined.add(left.get(0));
-                left = left.subList(1, left.size());
-            }
-            while (right.size() > 0) {
+                combined.addAll(msCombine.apply(left.subList(1, left.size()), right));
+            } else if (right.size() > 0) {
                 combined.add(right.get(0));
-                right = right.subList(1, right.size());
+                combined.addAll(msCombine.apply(left, right.subList(1, right.size())));
             }
             return combined;
         };
